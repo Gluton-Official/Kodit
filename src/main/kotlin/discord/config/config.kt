@@ -2,6 +2,7 @@ package discord.config
 
 import database.tables.ConfigTable
 import dev.kord.core.entity.interaction.InteractionCommand
+import dev.kord.rest.builder.interaction.ChatInputCreateBuilder
 import dev.kord.rest.builder.interaction.boolean
 import org.jetbrains.exposed.sql.Column
 import kotlin.properties.PropertyDelegateProvider
@@ -10,6 +11,7 @@ import kotlin.reflect.KMutableProperty1
 
 typealias ConfigProperty<E, T> = KMutableProperty1<ConfigTable<E>.ConfigEntity, T>
 typealias ArgAccessor<T> = InteractionCommand.() -> T?
+typealias OptionsBuilder = ChatInputCreateBuilder.() -> Unit
 
 inline fun <E : ConfigTable<E>.ConfigEntity, reified T> ConfigTable<E>.config(description: String, default: T) =
     PropertyDelegateProvider<ConfigTable<E>, ReadOnlyProperty<ConfigTable<E>, Column<T>>> { configTable, columnDelegate ->
@@ -24,6 +26,12 @@ inline fun <reified T> ConfigTable<*>.getConfigBuilder() = when (T::class) {
     Boolean::class -> ConfigBuilder(::bool, { boolean("enabled", "True to enable") }, { booleans["enabled"] })
     else -> error("Unknown column type: ${T::class.simpleName}")
 } as ConfigBuilder<T>
+
+data class ConfigBuilder<T>(
+    val columnBuilder: (String) -> Column<T>,
+    val options: OptionsBuilder,
+    val argAccessor: ArgAccessor<T>
+)
 
 object Config {
     val commands = mutableSetOf<ConfigCommand<*>>()
