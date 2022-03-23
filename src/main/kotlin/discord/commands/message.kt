@@ -1,31 +1,27 @@
-package command
+package discord.commands
 
 import dev.kord.core.Kord
-import dev.kord.core.behavior.interaction.response.edit
 import dev.kord.core.entity.interaction.MessageCommandInteraction
 import dev.kord.core.event.interaction.MessageCommandInteractionCreateEvent
-import dev.kord.core.kordLogger
 import dev.kord.core.on
 import dev.kord.rest.builder.interaction.MessageCommandCreateBuilder
 
 private val callbacks = mutableMapOf<String, suspend MessageCommandInteraction.() -> Unit>()
 
-suspend fun Kord.initInteractionCommands() {
+context(Kord) suspend fun initInteractionCommands() {
     kodit()
 
     messageInteractionEvent()
 }
 
-private suspend fun Kord.kodit() = messageInteraction(
+context(Kord) private suspend fun kodit() = messageInteraction(
     name = "Kodit",
     callback = {
-        deferEphemeralMessage().edit {
-            content = target.asMessage().content
-        }
+        TODO("Manual formatting")
     }
 )
 
-private suspend fun Kord.messageInteraction(
+context(Kord) private suspend fun messageInteraction(
     name: String,
     builder: MessageCommandCreateBuilder.() -> Unit = {},
     callback: suspend MessageCommandInteraction.() -> Unit = {}
@@ -35,9 +31,9 @@ private suspend fun Kord.messageInteraction(
 }
 
 
-private fun Kord.messageInteractionEvent() = on<MessageCommandInteractionCreateEvent> {
+context(Kord) private fun messageInteractionEvent() = on<MessageCommandInteractionCreateEvent> {
     interaction.apply {
-        kordLogger.debug(invokedCommandName)
+        println(invokedCommandName)
         callbacks[invokedCommandName]!!()
     }
 }
