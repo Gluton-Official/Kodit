@@ -14,24 +14,17 @@ repositories {
 }
 
 dependencies {
-    val kordVersion: String by project
-    val slf4jVersion: String by project
-    val exposedVersion: String by project
-    val mysqlVersion: String by project
-    val dotenvVersion: String by project
-    val kifVersion: String by project
-
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.6.10")
-    implementation("dev.kord:kord-core:$kordVersion")
-    implementation("org.slf4j:slf4j-simple:$slf4jVersion")
-    implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
-    implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
-    implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
-    implementation("mysql:mysql-connector-java:$mysqlVersion")
-    implementation("io.github.cdimascio:dotenv-kotlin:$dotenvVersion")
-//    implementation("com.github.atomgomba.kif:kif:$kifVersion")
+    implementation(kotlin("reflect"))
+    implementation("dev.kord:kord-core:0.8.0-M10")
+    implementation("org.slf4j:slf4j-simple:1.7.36")
+    implementation("org.jetbrains.exposed:exposed-core:0.37.3")
+    implementation("org.jetbrains.exposed:exposed-dao:0.37.3")
+    implementation("org.jetbrains.exposed:exposed-jdbc:0.37.3")
+    implementation("mysql:mysql-connector-java:8.0.28")
+    implementation("io.github.cdimascio:dotenv-kotlin:6.2.2")
 
     testImplementation(kotlin("test"))
+    testImplementation("io.mockk:mockk:1.12.3")
 }
 
 tasks.test {
