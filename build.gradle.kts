@@ -15,7 +15,7 @@ repositories {
 
 dependencies {
     implementation(kotlin("reflect"))
-    implementation("dev.kord:kord-core:0.8.0-M10")
+    implementation("dev.kord:kord-core:0.8.0-M12")
     implementation("org.slf4j:slf4j-simple:1.7.36")
     implementation("org.jetbrains.exposed:exposed-core:0.37.3")
     implementation("org.jetbrains.exposed:exposed-dao:0.37.3")
